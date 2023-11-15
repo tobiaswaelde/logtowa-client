@@ -1,0 +1,6 @@
+{
+	"sonarlint.connectedMode.project": {
+		"connectionId": "SonarQube",
+		"projectKey": "tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB"
+	}
+}

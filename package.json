@@ -1,0 +1,15 @@
+{
+  "name": "logtowa-client",
+  "description": "",
+  "keywords": [],
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:tobiaswaelde/logtowa-client.git",
+  "author": {
+    "name": "Tobias Wälde",
+    "email": "tobias.waelde@gmail.com",
+    "url": "https://tobiaswaelde.com"
+  },
+  "private": false,
+  "license": "MIT"
+}
