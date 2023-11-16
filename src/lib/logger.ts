@@ -1,35 +1,26 @@
-import { Socket, io } from 'socket.io-client';
 import { LogTowaOptions } from '../types/options';
 import { LogLevel } from '../types/log-level';
 import { LogMessage } from '../types/log-message';
-import { Queue } from '../util/queue';
+import { ConsoleLogger } from './console-logger';
+import { CloudLogger } from './cloud-logger';
 
 export class LogTowaClient {
-	private client: Socket;
-	private logQueue: Queue<LogMessage> = new Queue<LogMessage>();
+	private cloudLogger: CloudLogger;
+	private consoleLogger: ConsoleLogger;
 
 	private currentScope: string | null = null;
 	private tmpScope: string | null = null;
 
 	constructor(private readonly options: LogTowaOptions) {
-		this.client = io(options.host, {
-			autoConnect: true,
-			transports: ['websocket'],
-			auth: {
-				token: options.token,
-				appkey: options.appKey,
+		this.cloudLogger = new CloudLogger(options);
+		this.consoleLogger = new ConsoleLogger({
+			enabled: true,
+			level: 'silly',
+			timestamps: {
+				enabled: true,
+				format: 'HH:mm:ss.SSS',
 			},
-		})
-			.on('connect', () => {
-				console.log('[LogTowa] Cloud connected.');
-				this.sendLogsFromQueue();
-			})
-			.on('disconnect', () => {
-				console.warn('[LogTowa] Cloud disconnected.');
-			})
-			.on('error', (error) => {
-				console.error(`[LogTowa] Error connecting to cloud. ${error}`);
-			});
+		});
 	}
 
 	public scope(scope: string) {
@@ -50,8 +41,6 @@ export class LogTowaClient {
 				? meta.scope
 				: this.tmpScope ?? this.currentScope;
 
-		console.log(`[${level}] [${scope}] ${message} ${meta}`);
-
 		const msg: LogMessage = {
 			scope: scope,
 			appKey: this.options.appKey,
@@ -59,7 +48,9 @@ export class LogTowaClient {
 			message: message,
 			meta: meta,
 		};
-		this.sendLog(msg);
+
+		this.cloudLogger.log(msg);
+		this.consoleLogger.log(msg);
 
 		this.tmpScope = null;
 	}
@@ -90,33 +81,5 @@ export class LogTowaClient {
 	}
 	public silly(message: string, meta?: object) {
 		this.log('silly', message, meta);
-	}
-
-	/**
-	 * Send log message to the cloud.
-	 * @param {LogMessage} message The log message to send.
-	 */
-	private sendLog(message: LogMessage) {
-		if (this.client.connected && !this.client.disconnected) {
-			this.client.emit('log', message);
-			console.log('message sent');
-		} else {
-			message.timestamp = new Date();
-			message.ns = process.hrtime()[1];
-			console.log(message);
-			this.logQueue.enqueue(message);
-		}
-	}
-
-	/**
-	 * retry sending messages which came in as the client was not connected
-	 */
-	private sendLogsFromQueue() {
-		while (this.logQueue.size() !== 0) {
-			const msg = this.logQueue.dequeue();
-			if (msg) {
-				this.sendLog(msg);
-			}
-		}
 	}
 }
