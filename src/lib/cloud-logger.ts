@@ -1,13 +1,13 @@
 import { Socket, io } from 'socket.io-client';
 import { Queue } from '../util/queue';
-import { LogMessage } from '../types/log-message';
-import { LogTowaOptions } from '../types/options';
+import { CloudLogMessage } from '../types/log-message';
+import { CloudLoggerOptions } from '../types/options';
 
 export class CloudLogger {
 	private client: Socket;
-	private queue: Queue<LogMessage> = new Queue<LogMessage>();
+	private queue: Queue<CloudLogMessage> = new Queue<CloudLogMessage>();
 
-	constructor(private readonly options: LogTowaOptions) {
+	constructor(private readonly options: CloudLoggerOptions) {
 		this.client = io(options.host, {
 			autoConnect: true,
 			transports: ['websocket'],
@@ -30,9 +30,9 @@ export class CloudLogger {
 
 	/**
 	 * Send log message to the cloud.
-	 * @param {LogMessage} message The log message to send.
+	 * @param {CloudLogMessage} message The log message to send.
 	 */
-	public log(message: LogMessage) {
+	public log(message: CloudLogMessage) {
 		if (this.client.connected && !this.client.disconnected) {
 			this.client.emit('log', message);
 		} else {

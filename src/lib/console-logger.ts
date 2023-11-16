@@ -1,17 +1,8 @@
-import { LogLevel } from '../types/log-level';
 import { LogMessage } from '../types/log-message';
 import util from 'node:util';
 import { ConsoleColors } from '../util/console-colors';
 import { DateTime } from 'luxon';
-
-type ConsoleLoggerOptions = {
-	enabled: boolean;
-	level: LogLevel;
-	timestamps: {
-		enabled: boolean;
-		format: string;
-	};
-};
+import { ConsoleLoggerOptions } from '../types/options';
 
 export class ConsoleLogger {
 	constructor(private readonly options: ConsoleLoggerOptions) {}
@@ -50,9 +41,9 @@ export class ConsoleLogger {
 	}
 
 	private getTimestamp(): string {
-		if (!this.options.timestamps.enabled) return '';
+		if (!this.options.timestamps?.enabled) return '';
 
-		const value = DateTime.now().toFormat(this.options.timestamps.format);
+		const value = DateTime.now().toFormat(this.options.timestamps?.format ?? 'HH:mm:ss.SSS');
 		return `${ConsoleColors.Dim}${value}${ConsoleColors.Reset}  `;
 	}
 	private getScope(msg: LogMessage): string {

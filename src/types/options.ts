@@ -1,3 +1,5 @@
+import { LogLevel } from './log-level';
+
 /**
  * The options to configure the LogTowa transport.
  */
@@ -18,11 +20,21 @@ export type LogTowaOptions = {
 	appKey: string;
 };
 
+export type CloudLoggerOptions = LogTowaOptions & {
+	enabled?: boolean;
+	level?: LogLevel;
+};
+
+export type ConsoleLoggerOptions = {
+	enabled?: boolean;
+	level?: LogLevel;
+	timestamps?: {
+		enabled?: boolean;
+		format?: string;
+	};
+};
+
 export type LogTowaClientOptions = {
-	cloud?: LogTowaOptions & {
-		enabled?: boolean;
-	};
-	console: {
-		enabled?: boolean;
-	};
+	cloud?: CloudLoggerOptions;
+	console?: ConsoleLoggerOptions;
 };

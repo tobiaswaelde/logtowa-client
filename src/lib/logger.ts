@@ -1,26 +1,24 @@
-import { LogTowaOptions } from '../types/options';
+import { LogTowaClientOptions } from '../types/options';
 import { LogLevel } from '../types/log-level';
 import { LogMessage } from '../types/log-message';
 import { ConsoleLogger } from './console-logger';
 import { CloudLogger } from './cloud-logger';
 
 export class LogTowaClient {
-	private cloudLogger: CloudLogger;
-	private consoleLogger: ConsoleLogger;
+	private cloudLogger?: CloudLogger;
+	private consoleLogger?: ConsoleLogger;
 
 	private currentScope: string | null = null;
 	private tmpScope: string | null = null;
 
-	constructor(private readonly options: LogTowaOptions) {
-		this.cloudLogger = new CloudLogger(options);
-		this.consoleLogger = new ConsoleLogger({
-			enabled: true,
-			level: 'silly',
-			timestamps: {
-				enabled: true,
-				format: 'HH:mm:ss.SSS',
-			},
-		});
+	constructor(private readonly options: LogTowaClientOptions) {
+		if (options.console) {
+			this.consoleLogger = new ConsoleLogger(options.console);
+		}
+
+		if (options.cloud) {
+			this.cloudLogger = new CloudLogger(options.cloud);
+		}
 	}
 
 	public scope(scope: string) {
@@ -43,14 +41,17 @@ export class LogTowaClient {
 
 		const msg: LogMessage = {
 			scope: scope,
-			appKey: this.options.appKey,
 			level: level,
 			message: message,
 			meta: meta,
 		};
 
-		this.cloudLogger.log(msg);
-		this.consoleLogger.log(msg);
+		if (this.options.cloud?.enabled) {
+			this.cloudLogger?.log({ ...msg, appKey: this.options.cloud.appKey });
+		}
+		if (this.options.console?.enabled) {
+			this.consoleLogger?.log(msg);
+		}
 
 		this.tmpScope = null;
 	}
