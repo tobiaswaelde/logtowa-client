@@ -3,7 +3,7 @@
   "description": "",
   "keywords": [],
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "out/index.js",
   "repository": "git@github.com:tobiaswaelde/logtowa-client.git",
   "author": {
     "name": "Tobias Wälde",
@@ -11,5 +11,20 @@
     "url": "https://tobiaswaelde.com"
   },
   "private": false,
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --config \"./nodemon.json\"",
+    "prebuild": "rm -rf ./out",
+    "build": "tsc",
+    "start": "node ./out/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.7.2"
+  }
 }
