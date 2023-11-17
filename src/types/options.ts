@@ -1,9 +1,19 @@
 import { LogLevel } from './log-level';
 
 /**
- * The options to configure the LogTowa transport.
+ * Cloud logging options.
  */
-export type LogTowaOptions = {
+export type CloudLoggerOptions = {
+	/**
+	 * Enable/disable cloud logging.
+	 */
+	enabled?: boolean;
+
+	/**
+	 * The minimim level to log.
+	 */
+	level?: keyof typeof LogLevel;
+
 	/**
 	 * The URL to the LogTowa backend.
 	 */
@@ -20,19 +30,37 @@ export type LogTowaOptions = {
 	appKey: string;
 };
 
-export type CloudLoggerOptions = LogTowaOptions & {
-	enabled?: boolean;
-	level?: keyof typeof LogLevel;
-};
-
+/**
+ * Console logging options.
+ */
 export type ConsoleLoggerOptions = {
+	/**
+	 * Enable/disable cloud logging.
+	 */
 	enabled?: boolean;
+
+	/**
+	 * The minimim level to log.
+	 */
 	level?: keyof typeof LogLevel;
+
+	/**
+	 * Enable/disable timestamps.
+	 */
 	timestamps?: boolean;
 };
 
 export type LogTowaClientOptions = {
+	/** the minimim level to log. */
 	level?: keyof typeof LogLevel;
+
+	/**
+	 * The cloud logging options.
+	 */
 	cloud?: CloudLoggerOptions;
+
+	/**
+	 * The console logging options.
+	 */
 	console?: ConsoleLoggerOptions;
 };
