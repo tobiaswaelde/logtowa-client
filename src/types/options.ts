@@ -22,19 +22,17 @@ export type LogTowaOptions = {
 
 export type CloudLoggerOptions = LogTowaOptions & {
 	enabled?: boolean;
-	level?: LogLevel;
+	level?: keyof typeof LogLevel;
 };
 
 export type ConsoleLoggerOptions = {
 	enabled?: boolean;
-	level?: LogLevel;
-	timestamps?: {
-		enabled?: boolean;
-		format?: string;
-	};
+	level?: keyof typeof LogLevel;
+	timestamps?: boolean;
 };
 
 export type LogTowaClientOptions = {
+	level?: keyof typeof LogLevel;
 	cloud?: CloudLoggerOptions;
 	console?: ConsoleLoggerOptions;
 };

@@ -2,11 +2,20 @@ import { Socket, io } from 'socket.io-client';
 import { Queue } from '../util/queue';
 import { CloudLogMessage } from '../types/log-message';
 import { CloudLoggerOptions } from '../types/options';
+import { LogLevel } from '../types/log-level';
 
+/**
+ * Provides a cloud logging channel.
+ */
 export class CloudLogger {
 	private client: Socket;
+
+	/** Queue of unsent messages. */
 	private queue: Queue<CloudLogMessage> = new Queue<CloudLogMessage>();
 
+	/**
+	 * @param {CloudLoggerOptions} options The options.
+	 */
 	constructor(private readonly options: CloudLoggerOptions) {
 		this.client = io(options.host, {
 			autoConnect: true,
@@ -33,6 +42,10 @@ export class CloudLogger {
 	 * @param {CloudLogMessage} message The log message to send.
 	 */
 	public log(message: CloudLogMessage) {
+		if (this.options.level && LogLevel[message.level] > LogLevel[this.options.level]) {
+			return;
+		}
+
 		if (this.client.connected && !this.client.disconnected) {
 			this.client.emit('log', message);
 		} else {

@@ -1,3 +1,5 @@
+import { LogLevel } from './log-level';
+
 /**
  * Type of log message to send to the backend
  */
@@ -6,7 +8,7 @@ export type LogMessage = {
 	ns?: number;
 
 	/** The log level. */
-	level: string;
+	level: keyof typeof LogLevel;
 
 	/** The scope. */
 	scope?: string | null;

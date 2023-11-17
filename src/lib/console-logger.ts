@@ -1,13 +1,27 @@
 import { LogMessage } from '../types/log-message';
 import util from 'node:util';
 import { ConsoleColors } from '../util/console-colors';
-import { DateTime } from 'luxon';
 import { ConsoleLoggerOptions } from '../types/options';
+import { LogLevel } from '../types/log-level';
 
+/**
+ * Provides a console logging channel.
+ */
 export class ConsoleLogger {
+	/**
+	 * @param {ConsoleLoggerOptions} options The options.
+	 */
 	constructor(private readonly options: ConsoleLoggerOptions) {}
 
+	/**
+	 * Logs a message to the console.
+	 * @param {LogMessage} message The message to log.
+	 */
 	public log(message: LogMessage) {
+		if (this.options.level && LogLevel[message.level] > LogLevel[this.options.level]) {
+			return;
+		}
+
 		const ts = this.getTimestamp();
 		const sc = this.getScope(message);
 		const lv = this.getLevel(message);
@@ -17,6 +31,22 @@ export class ConsoleLogger {
 		console.log(`${ts}${sc}${lv}${msg}${met}`);
 	}
 
+	private getTimestamp(): string {
+		if (this.options.timestamps === false) return '';
+
+		const ts = new Date();
+		const h = ts.getHours().toFixed(0).padStart(2, '0');
+		const m = ts.getMinutes().toFixed(0).padStart(2, '0');
+		const s = ts.getSeconds().toFixed(0).padStart(2, '0');
+		const ms = ts.getMilliseconds().toFixed(0).padStart(3, '0');
+		const value = `${h}:${m}:${s}.${ms}`;
+
+		return `${ConsoleColors.Dim}${value}${ConsoleColors.Reset}  `;
+	}
+	private getScope(msg: LogMessage): string {
+		if (!msg.scope) return '';
+		return `${ConsoleColors.Dim}[${msg.scope}] › ${ConsoleColors.Reset}`;
+	}
 	private getLevelColor(level: string) {
 		switch (level) {
 			case 'error':
@@ -38,17 +68,6 @@ export class ConsoleLogger {
 			case 'silly':
 				return ConsoleColors.Dim;
 		}
-	}
-
-	private getTimestamp(): string {
-		if (!this.options.timestamps?.enabled) return '';
-
-		const value = DateTime.now().toFormat(this.options.timestamps?.format ?? 'HH:mm:ss.SSS');
-		return `${ConsoleColors.Dim}${value}${ConsoleColors.Reset}  `;
-	}
-	private getScope(msg: LogMessage): string {
-		if (!msg.scope) return '';
-		return `${ConsoleColors.Dim}[${msg.scope}] › ${ConsoleColors.Reset}`;
 	}
 	private getLevel(msg: LogMessage): string {
 		const value = msg.level;

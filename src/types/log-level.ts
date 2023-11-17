@@ -1,22 +1,11 @@
-export type LogLevel =
-	| 'error'
-	| 'warn'
-	| 'info'
-	| 'success'
-	| 'http'
-	| 'db'
-	| 'verbose'
-	| 'debug'
-	| 'silly';
-
-export enum ELogLevel {
-	Error = 0,
-	Warn = 1,
-	Info = 2,
-	Success = 3,
-	Http = 4,
-	Db = 5,
-	Verbose = 6,
-	Debug = 7,
-	Silly = 8,
+export enum LogLevel {
+	error = 0,
+	warn = 1,
+	info = 2,
+	success = 3,
+	http = 4,
+	db = 5,
+	verbose = 6,
+	debug = 7,
+	silly = 8,
 }
