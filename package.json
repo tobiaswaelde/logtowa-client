@@ -15,8 +15,7 @@
   "scripts": {
     "dev": "nodemon --config \"./nodemon.json\"",
     "prebuild": "rm -rf ./out",
-    "build": "tsc",
-    "start": "node ./out/index.js"
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",

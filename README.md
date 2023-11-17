@@ -1,5 +1,14 @@
 # LogTowa Client
 
+<!-- #region badges -->
+[![Quality Gate Status](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=alert_status&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
+[![Maintainability Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=sqale_rating&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
+[![Security Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=security_rating&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
+[![Vulnerabilities](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=vulnerabilities&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
+[![Bugs](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=bugs&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
+[![Duplicated Lines (%)](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=duplicated_lines_density&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
+<!-- #endregion -->
+
 This package provides a minimal client for [LogTowa](https://github.com/tobiaswaelde/logtowa-app) providing a consoel logger and an interface to log to the LogTowa cloud.
 
 [LogTowa](https://github.com/tobiaswaelde/logtowa-app) is a simple self hosted service which helps you keeping track of your logs in a simple and clear web UI.
@@ -52,12 +61,24 @@ logger.info('Hello world.');
 logger.info('User signed in.', { name: 'Tobias', age: 24 });
 ```
 
-### Log Message with scope
+### Log Messages with scope
 ```ts
-logger.info('Initialization successful.', { scope: 'db' });
+logger.scope('db');
+logger.debug('Initializing DB connection...');
+logger.info('Initialization successful.');
+logger.unscope();
 ```
 
-### Log Message with metadata & scope 
+### Send a single message with a given scope
 ```ts
-logger.info('User signed in.', { scope: 'auth', name: 'Tobias', age: 24 });
+logger.scope('db');
+logger.debug('Initializing DB connection...');
+
+logger.scoped('other scope').info('Info log with other scope.');
+// OR
+logger.info('Info log with other scope.', { scope: 'other scope' });
+logger.scoped('other scope').info('Info log with another scope.', { scope: 'another scope' }); // meta scope will overwrite other scopes
+
+logger.info('Initialization successful.');
+logger.unscope();
 ```
