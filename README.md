@@ -9,7 +9,7 @@
 [![Duplicated Lines (%)](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB&metric=duplicated_lines_density&token=sqb_58424cc4277c849abc433d371e95b12065fc5718)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_logtowa-client_AYvTbzjog-fAIT7ou_jB)
 <!-- #endregion -->
 
-This package provides a minimal client for [LogTowa](https://github.com/tobiaswaelde/logtowa-app) providing a consoel logger and an interface to log to the LogTowa cloud.
+This package provides a minimal client for [LogTowa](https://github.com/tobiaswaelde/logtowa-app) providing a console logger and an interface to log to the LogTowa cloud.
 
 [LogTowa](https://github.com/tobiaswaelde/logtowa-app) is a simple self hosted service which helps you keeping track of your logs in a simple and clear web UI.
 
