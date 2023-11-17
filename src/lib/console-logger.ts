@@ -78,6 +78,17 @@ export class ConsoleLogger {
 	}
 	private getMeta(msg: LogMessage): string {
 		if (!msg.meta) return '';
-		return `\n` + util.inspect(msg.meta, { depth: 3, colors: true });
+		const prefix = this.options.meta?.compact ? '' : `\n`;
+
+		return (
+			prefix +
+			util.inspect(msg.meta, {
+				colors: true,
+				depth: this.options.meta?.maxDepth ?? 2,
+				compact: this.options.meta?.compact,
+				maxStringLength: this.options.meta?.maxStringLength,
+				maxArrayLength: this.options.meta?.maxArrayLenth,
+			})
+		);
 	}
 }

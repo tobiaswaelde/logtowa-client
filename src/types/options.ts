@@ -5,27 +5,29 @@ import { LogLevel } from './log-level';
  */
 export type CloudLoggerOptions = {
 	/**
-	 * Enable/disable cloud logging.
+	 * Setting this to `true` will enable cloud logs.
+	 * @default false
 	 */
 	enabled?: boolean;
 
 	/**
-	 * The minimim level to log.
+	 * Specify the minimim level to log.
+	 * @default "verbose"
 	 */
 	level?: keyof typeof LogLevel;
 
 	/**
-	 * The URL to the LogTowa backend.
+	 * Specify the URL to the LogTowa backend. This can be found in the LogTowa web UI.
 	 */
 	host: string;
 
 	/**
-	 * The API token.
+	 * Specify the token to authenticate websocket requests. This can be found in the LogTowa web UI.
 	 */
 	token: string;
 
 	/**
-	 * The project key of the project to which the logger should send the logs.
+	 * Specify the app key of the app to which the logger should send the logs. This can be found in the LogTowa web UI.
 	 */
 	appKey: string;
 };
@@ -35,32 +37,69 @@ export type CloudLoggerOptions = {
  */
 export type ConsoleLoggerOptions = {
 	/**
-	 * Enable/disable cloud logging.
+	 * Setting this to `true` will enable console logs.
+	 * @default false
 	 */
 	enabled?: boolean;
 
 	/**
-	 * The minimim level to log.
+	 * Specify the minimim level to log.
+	 * @default "verbose"
 	 */
 	level?: keyof typeof LogLevel;
 
 	/**
-	 * Enable/disable timestamps.
+	 * Setting this to `false` will prevent showing timestamps in the console logs.
+	 * @default true
 	 */
 	timestamps?: boolean;
+
+	/**
+	 * Format the output of the meta data.
+	 */
+	meta?: {
+		/**
+		 * Specifies the number of times to recurse while formatting object. This is useful for inspecting large objects. To recurse up to the maximum call stack size pass `Infinity` or `null`.
+		 * @default 2
+		 */
+		maxDepth?: number;
+
+		/**
+		 * Setting this to `false` causes each object key to be displayed on a new line.
+		 * @default true
+		 */
+		compact?: boolean;
+
+		/**
+		 * Specifies the maximum number of characters to include when formatting. Set to `null` or `Infinity` to show all elements. Set to `0` or negative to show no characters.
+		 * @default 10000
+		 */
+		maxStringLength?: number;
+
+		/**
+		 * Specifies the maximum number of `Array`, `TypedArray`, `WeakMap`, and `WeakSet` elements to include when formatting. Set to `null` or `Infinity` to show all elements. Set to `0` or negative to show no elements.
+		 * @default 100
+		 */
+		maxArrayLenth?: number;
+	};
 };
 
 export type LogTowaClientOptions = {
-	/** the minimim level to log. */
+	/**
+	 * Specify the minimim level to log.
+	 * @default "verbose"
+	 */
 	level?: keyof typeof LogLevel;
 
 	/**
-	 * The cloud logging options.
+	 * Specify cloud logging options.
+	 * @default undefined
 	 */
 	cloud?: CloudLoggerOptions;
 
 	/**
-	 * The console logging options.
+	 * Specify console logging options.
+	 * @default undefined
 	 */
 	console?: ConsoleLoggerOptions;
 };
