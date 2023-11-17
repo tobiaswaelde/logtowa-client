@@ -54,11 +54,13 @@ There are several ways how you can log a message. You can add metadata which pro
 ### Basic Log Message
 ```ts
 logger.info('Hello world.');
+logger.log('info', 'Hello world.');
 ```
 
 ### Log Message with metadata
 ```ts
 logger.info('User signed in.', { name: 'Tobias', age: 24 });
+logger.log('info', 'User signed in.', { name: 'Tobias', age: 24 });
 ```
 
 ### Log Messages with scope

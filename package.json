@@ -1,6 +1,6 @@
 {
   "name": "logtowa-client",
-  "description": "",
+  "description": "Minimal client for LogTowa",
   "keywords": [],
   "version": "1.0.0",
   "main": "out/index.js",
