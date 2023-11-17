@@ -2,7 +2,7 @@
   "name": "logtowa-client",
   "description": "",
   "keywords": [],
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "out/index.js",
   "repository": "git@github.com:tobiaswaelde/logtowa-client.git",
   "author": {
