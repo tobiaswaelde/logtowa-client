@@ -68,7 +68,11 @@ export class LogTowaClient {
 	 * @param message The message to log.
 	 * @param meta Meta data of the message. (Can also contain a scope for the message. The meta scope will overwrite all other given scopes.)
 	 */
-	public log(level: keyof typeof LogLevel, message: string, meta?: object) {
+	public log(
+		level: keyof typeof LogLevel,
+		message: string,
+		meta?: { scope?: string; [key: string]: any }
+	) {
 		if (this.options.level && LogLevel[level] > LogLevel[this.options.level]) {
 			return;
 		}
@@ -78,13 +82,17 @@ export class LogTowaClient {
 			meta && 'scope' in meta && typeof meta.scope === 'string'
 				? meta.scope
 				: this.tmpScope ?? this.currentScope;
+		const { scope: removedScope, ...remainingMeta } = meta ?? {};
+
+		// prepare meta
+		const metadata = Object.keys(remainingMeta).length > 0 ? remainingMeta : null;
 
 		// prepare the log message
 		const msg: LogMessage = {
 			scope: scope,
 			level: level,
 			message: message,
-			meta: meta,
+			meta: metadata,
 		};
 
 		// log message to configured channels
