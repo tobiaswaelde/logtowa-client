@@ -2,6 +2,12 @@
 
 *Changelog created using the [Simple Changelog](https://marketplace.visualstudio.com/items?itemName=tobiaswaelde.vscode-simple-changelog) extension for VS Code.*
 
+## [1.0.5] - 2023-11-18
+### Changed
+- Remove scope from metadata
+- Send null insted of empty object as metadata
+
+
 ## [1.0.4] - 2023-11-18
 ### Fixed
 - Prevent removing comments on build
