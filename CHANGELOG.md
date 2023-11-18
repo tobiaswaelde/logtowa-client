@@ -2,9 +2,15 @@
 
 *Changelog created using the [Simple Changelog](https://marketplace.visualstudio.com/items?itemName=tobiaswaelde.vscode-simple-changelog) extension for VS Code.*
 
+## [1.0.4] - 2023-11-18
+### Fixed
+- Prevent removing comments on build
+
+
 ## [1.0.3] - 2023-11-17
 ### Fixed
 - Fix typo in readme
+
 
 ## [1.0.2] - 2023-11-17
 ### Added
@@ -12,6 +18,7 @@
 
 ### Changed
 - Improve JSDoc documentation
+
 
 ## [1.0.1] - 2023-11-17
 ### Changed
